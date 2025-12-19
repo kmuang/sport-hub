@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - SportHub</title>
+    <meta name="description" content="Login or register to access SportHub - Professional Sports Management Platform">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css"> 
+    <link rel="shortcut icon" href="img/logo.jpeg" type="image/x-icon">
+    <style>
+        .auth-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--spacing-lg);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .auth-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 0;
+        }
+
+        .auth-card {
+            position: relative;
+            z-index: 1;
+            background: var(--color-bg-elevated);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-xl);
+            width: 100%;
+            max-width: 480px;
+            border: 2px solid var(--color-border);
+            overflow: hidden;
+        }
+
+        .auth-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: var(--gradient-primary);
+        }
+
+        .auth-header {
+            padding: var(--spacing-2xl) var(--spacing-2xl) var(--spacing-lg);
+            text-align: center;
+        }
+
+        .auth-logo {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .auth-logo svg {
+            width: 48px;
+            height: 48px;
+            color: var(--color-primary);
+        }
+
+        .auth-logo span {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            font-weight: 800;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .auth-title {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: var(--spacing-xs);
+            color: var(--color-text);
+        }
+
+        .auth-subtitle {
+            color: var(--color-text-secondary);
+            font-size: 1rem;
+        }
+
+        .auth-tabs {
+            display: flex;
+            border-bottom: 2px solid var(--color-border);
+            margin: 0 var(--spacing-2xl);
+        }
+
+        .auth-tab {
+            flex: 1;
+            padding: var(--spacing-md);
+            background: none;
+            border: none;
+            font-family: var(--font-display);
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--color-text-secondary);
+            cursor: pointer;
+            transition: all var(--transition-base);
+            position: relative;
+        }
+
+        .auth-tab::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--gradient-primary);
+            transform: scaleX(0);
+            transition: transform var(--transition-base);
+        }
+
+        .auth-tab.active {
+            color: var(--color-primary);
+        }
+
+        .auth-tab.active::after {
+            transform: scaleX(1);
+        }
+
+        .auth-body {
+            padding: var(--spacing-2xl);
+        }
+
+        .auth-form {
+            display: none;
+        }
+
+        .auth-form.active {
+            display: block;
+            animation: fadeInUp 0.3s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .auth-input-group {
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .auth-label {
+            display: block;
+            margin-bottom: var(--spacing-xs);
+            font-weight: 600;
+            color: var(--color-text);
+            font-size: 0.95rem;
+        }
+
+        .auth-input {
+            width: 100%;
+            padding: var(--spacing-md);
+            border-radius: var(--radius-md);
+            border: 2px solid var(--color-border);
+            background: var(--color-bg);
+            color: var(--color-text);
+            font-size: 1rem;
+            font-family: var(--font-primary);
+            transition: all var(--transition-base);
+        }
+
+        .auth-input:focus {
+            outline: none;
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 4px hsla(260, 100%, 65%, 0.1);
+        }
+
+        .auth-checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .auth-checkbox {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        .auth-checkbox-label {
+            font-size: 0.9rem;
+            color: var(--color-text-secondary);
+            cursor: pointer;
+        }
+
+        .auth-button {
+            width: 100%;
+            padding: var(--spacing-md);
+            border-radius: var(--radius-md);
+            border: none;
+            background: var(--gradient-primary);
+            color: white;
+            font-family: var(--font-display);
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all var(--transition-base);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .auth-button:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .auth-divider {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+            margin: var(--spacing-xl) 0;
+            color: var(--color-text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .auth-divider::before,
+        .auth-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--color-border);
+        }
+
+        .auth-social {
+            display: flex;
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .auth-social-btn {
+            flex: 1;
+            padding: var(--spacing-md);
+            border-radius: var(--radius-md);
+            border: 2px solid var(--color-border);
+            background: var(--color-bg);
+            color: var(--color-text);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--transition-base);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--spacing-xs);
+        }
+
+        .auth-social-btn:hover {
+            border-color: var(--color-primary);
+            transform: translateY(-2px);
+        }
+
+        .auth-footer {
+            text-align: center;
+            color: var(--color-text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .auth-link {
+            color: var(--color-primary);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color var(--transition-base);
+        }
+
+        .auth-link:hover {
+            color: var(--color-primary-light);
+        }
+
+        .error-message {
+            color: var(--color-danger);
+            font-size: 0.85rem;
+            margin-top: var(--spacing-xs);
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="auth-container">
+        <div class="auth-background">
+            <div class="gradient-orb orb-1"></div>
+            <div class="gradient-orb orb-2"></div>
+            <div class="gradient-orb orb-3"></div>
+        </div>
+
+        <div class="auth-card">
+            <div class="auth-header">
+                <div class="auth-logo">
+                    <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="20" cy="20" r="18" stroke="currentColor" stroke-width="2" />
+                        <path d="M20 8L24 16H16L20 8Z" fill="currentColor" />
+                        <path d="M20 32L16 24H24L20 32Z" fill="currentColor" />
+                        <path d="M8 20L16 16V24L8 20Z" fill="currentColor" />
+                        <path d="M32 20L24 24V16L32 20Z" fill="currentColor" />
+                    </svg>
+                    <span>SportHub</span>
+                </div>
+                <h1 class="auth-title">Welcome Back</h1>
+                <p class="auth-subtitle">Manage your sports teams like a pro</p>
+            </div>
+
+            <div class="auth-tabs">
+                <button class="auth-tab active" data-tab="login">Login</button>
+                <button class="auth-tab" data-tab="register">Register</button>
+            </div>
+
+            <div class="auth-body">
+                <!-- Login Form -->
+                <form class="auth-form active" id="loginForm">
+                    <div class="auth-input-group">
+                        <label class="auth-label" for="login-email">Email Address</label>
+                        <input type="email" id="login-email" class="auth-input" placeholder="your@email.com" required>
+                        <span class="error-message" id="login-email-error"></span>
+                    </div>
+
+                    <div class="auth-input-group">
+                        <label class="auth-label" for="login-password">Password</label>
+                        <input type="password" id="login-password" class="auth-input" placeholder="Enter your password"
+                            required>
+                        <span class="error-message" id="login-password-error"></span>
+                    </div>
+
+                    <div class="auth-checkbox-group">
+                        <input type="checkbox" id="remember-me" class="auth-checkbox">
+                        <label for="remember-me" class="auth-checkbox-label">Remember me</label>
+                    </div>
+
+                    <button type="submit" class="auth-button">Login</button>
+
+                    <div class="auth-footer">
+                        <a href="#" class="auth-link">Forgot password?</a>
+                    </div>
+                </form>
+
+                <!-- Register Form -->
+                <form class="auth-form" id="registerForm">
+                    <div class="auth-input-group">
+                        <label class="auth-label" for="register-name">Full Name</label>
+                        <input type="text" id="register-name" class="auth-input" placeholder="John Doe" required>
+                        <span class="error-message" id="register-name-error"></span>
+                    </div>
+
+                    <div class="auth-input-group">
+                        <label class="auth-label" for="register-email">Email Address</label>
+                        <input type="email" id="register-email" class="auth-input" placeholder="your@email.com"
+                            required>
+                        <span class="error-message" id="register-email-error"></span>
+                    </div>
+
+                    <div class="auth-input-group">
+                        <label class="auth-label" for="register-password">Password</label>
+                        <input type="password" id="register-password" class="auth-input" placeholder="Create a password"
+                            required>
+                        <span class="error-message" id="register-password-error"></span>
+                    </div>
+
+                    <div class="auth-input-group">
+                        <label class="auth-label" for="register-confirm-password">Confirm Password</label>
+                        <input type="password" id="register-confirm-password" class="auth-input"
+                            placeholder="Confirm your password" required>
+                        <span class="error-message" id="register-confirm-error"></span>
+                    </div>
+
+                    <div class="auth-checkbox-group">
+                        <input type="checkbox" id="terms" class="auth-checkbox" required>
+                        <label for="terms" class="auth-checkbox-label">
+                            I agree to the <a href="#" class="auth-link">Terms & Conditions</a>
+                        </label>
+                    </div>
+
+                    <button type="submit" class="auth-button">Create Account</button>
+                </form>
+
+                <div class="auth-divider">OR</div>
+
+                <div class="auth-social">
+                    <button class="auth-social-btn" type="button">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path
+                                d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+                                fill="#4285F4" />
+                            <path
+                                d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+                                fill="#34A853" />
+                            <path
+                                d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
+                                fill="#FBBC05" />
+                            <path
+                                d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
+                                fill="#EA4335" />
+                        </svg>
+                        Google
+                    </button>
+                    <button class="auth-social-btn" type="button">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path
+                                d="M12 2C6.477 2 2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.879V14.89h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.989C18.343 21.129 22 16.99 22 12c0-5.523-4.477-10-10-10z" />
+                        </svg>
+                        Facebook
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Tab switching
+        const tabs = document.querySelectorAll('.auth-tab');
+        const forms = document.querySelectorAll('.auth-form');
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const targetTab = tab.dataset.tab;
+
+                // Update tabs
+                tabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+
+                // Update forms
+                forms.forEach(form => {
+                    form.classList.remove('active');
+                    if (form.id === targetTab + 'Form') {
+                        form.classList.add('active');
+                    }
+                });
+
+                // Update title
+                const title = document.querySelector('.auth-title');
+                const subtitle = document.querySelector('.auth-subtitle');
+                if (targetTab === 'login') {
+                    title.textContent = 'Welcome Back';
+                    subtitle.textContent = 'Manage your sports teams like a pro';
+                } else {
+                    title.textContent = 'Create Account';
+                    subtitle.textContent = 'Join SportHub and start managing today';
+                }
+            });
+        });
+
+        // Login form submission
+        document.getElementById('loginForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+
+            // Basic validation
+            if (!email || !password) {
+                alert('Please fill in all fields');
+                return;
+            }
+
+            // In a real app, you would send this to your backend
+            console.log('Login attempt:', { email, password });
+
+            // Simulate successful login
+            localStorage.setItem('isLoggedIn', 'true');
+            localStorage.setItem('userEmail', email);
+
+            // Redirect to main app
+            window.location.href = 'index.html';
+        });
+
+        // Register form submission
+        document.getElementById('registerForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const name = document.getElementById('register-name').value;
+            const email = document.getElementById('register-email').value;
+            const password = document.getElementById('register-password').value;
+            const confirmPassword = document.getElementById('register-confirm-password').value;
+            const terms = document.getElementById('terms').checked;
+
+            // Clear previous errors
+            document.querySelectorAll('.error-message').forEach(msg => msg.classList.remove('show'));
+
+            // Validation
+            let hasError = false;
+
+            if (!name) {
+                document.getElementById('register-name-error').textContent = 'Name is required';
+                document.getElementById('register-name-error').classList.add('show');
+                hasError = true;
+            }
+
+            if (!email || !email.includes('@')) {
+                document.getElementById('register-email-error').textContent = 'Valid email is required';
+                document.getElementById('register-email-error').classList.add('show');
+                hasError = true;
+            }
+
+            if (!password || password.length < 6) {
+                document.getElementById('register-password-error').textContent = 'Password must be at least 6 characters';
+                document.getElementById('register-password-error').classList.add('show');
+                hasError = true;
+            }
+
+            if (password !== confirmPassword) {
+                document.getElementById('register-confirm-error').textContent = 'Passwords do not match';
+                document.getElementById('register-confirm-error').classList.add('show');
+                hasError = true;
+            }
+
+            if (!terms) {
+                alert('Please agree to the Terms & Conditions');
+                hasError = true;
+            }
+
+            if (hasError) return;
+
+            // In a real app, you would send this to your backend
+            console.log('Registration attempt:', { name, email, password });
+
+            // Simulate successful registration
+            localStorage.setItem('isLoggedIn', 'true');
+            localStorage.setItem('userEmail', email);
+            localStorage.setItem('userName', name);
+
+            // Redirect to main app
+            window.location.href = 'index.html';
+        });
+
+        // Social login buttons
+        document.querySelectorAll('.auth-social-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const provider = btn.textContent.trim();
+                console.log(`Login with ${provider}`);
+                alert(`${provider} login would be handled by OAuth in production`);
+            });
+        });
+    </script>
+</body>
+
+</html>
